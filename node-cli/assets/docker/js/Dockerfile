@@ -16,7 +16,7 @@ USER node
 COPY --chown=node:node package*.json ./
 
 # Run clean install
-RUN npm ci \
+RUN npm install \
   # skip funding messages
   --fund false \
   # skip pre/post scripts

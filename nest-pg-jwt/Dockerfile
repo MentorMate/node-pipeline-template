@@ -15,7 +15,7 @@ ENV NODE_ENV development
 # Copy the source code
 COPY --chown=node:node . .
 
-RUN npm ci \
+RUN npm install \
   # skip funding messages
   --fund false \
   # skip pre/post scripts
@@ -48,7 +48,7 @@ COPY --chown=node:node . .
 RUN npm run build
 
 # Run clean install
-RUN npm ci \
+RUN npm install \
   # skip funding messages
   --fund false \
   # skip pre/post scripts
