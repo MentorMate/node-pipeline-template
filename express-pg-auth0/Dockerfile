@@ -19,7 +19,7 @@ USER node
 COPY --chown=node:node package*.json ./
 
 # Run clean install
-RUN npm ci \
+RUN npm install \
   # skip funding messages
   --fund false \
   # skip pre/post scripts
@@ -56,7 +56,7 @@ USER node
 COPY --from=builder --chown=node:node /app/package*.json ./
 
 # Run clean install
-RUN npm ci \
+RUN npm install \
   # skip funding messages
   --fund false \
   # skip pre/post scripts
