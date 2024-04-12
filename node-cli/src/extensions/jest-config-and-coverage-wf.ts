@@ -112,6 +112,16 @@ export default (toolbox: GluegunToolbox) => {
           'test:e2e': 'npx jest --config ./test/jest-e2e.config.js --runInBand',
         });
       }
+
+      if (
+        isExampleApp &&
+        framework === Framework.NEST &&
+        db === Database.POSTGRESQL
+      ) {
+        Object.assign(pkgJson.scripts, {
+          'test:e2e': 'bash scripts/run-e2e-tests.sh',
+        });
+      }
     }
 
     return {

@@ -189,9 +189,13 @@ export default (toolbox: GluegunToolbox) => {
                 { overwrite: true },
               ),
               db === Database.POSTGRESQL &&
-                copyAsync(`${assetsPath}/db/pg/scripts`, `${appDir}/scripts`, {
-                  overwrite: true,
-                }),
+                copyAsync(
+                  `${assetsPath}/nest/example-app-${db}/scripts`,
+                  `${appDir}/scripts`,
+                  {
+                    overwrite: true,
+                  },
+                ),
             ].filter(Boolean),
           );
         }

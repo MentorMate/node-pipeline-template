@@ -29,7 +29,7 @@
     "test": "npm run test:unit && npm run test:e2e",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "npx jest --config ./test/jest-e2e.config.js --runInBand",
+    "test:e2e": "bash scripts/run-e2e-tests.sh",
     "test:e2e:cov": "npm run test:e2e -- --coverage",
     "test:unit": "jest",
     "test:unit:cov": "jest --coverage",
