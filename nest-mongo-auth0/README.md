@@ -83,6 +83,7 @@ Create a `docker-compose.override.yml` file using the example:
 cp docker-compose.override.example.yml docker-compose.override.yml
 ```
 
+
 Open the `docker-compose.override.yml` file to adjust the database volume path.
 
 ### Provision the services
@@ -212,7 +213,7 @@ npm run license:summary
 
 ### VS Code
 
-Go to the Debug menu (CTRL+SHIFT+D). From `RUN AND DEBUG` at the top select
+Go to the Debug menu (CTRL+SHIFT+D). From `RUN AND DATABASE_LOG` at the top select
 `Run Script: Launch via NPM`. You should now be able to start debugging
 by pressing `F5`.
 

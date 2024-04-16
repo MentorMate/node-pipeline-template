@@ -74,7 +74,7 @@ Update `NODE_ENV` to `test`.
 Make sure to provide a different database name from what you have in `.env`
 as e2e tests wipe the database clean before they run.
 
-You may want to disable query logging by removing `DEBUG=knex:query`.
+You may want to disable query logging by removing `DATABASE_LOG=knex:query`.
 
 ### Setup docker-compose overrides
 
@@ -176,10 +176,10 @@ npm run db:migrate:rollback
 npm run db:migrate:rollback --all
 ```
 
-To debug migrations set the `DEBUG` environment variable to `knex:query`, e.g.
+To debug migrations set the `DATABASE_LOG` environment variable to `knex:query`, e.g.
 
 ```bash
-DEBUG=knex:query npm run db:migrate:up
+DATABASE_LOG=knex:query npm run db:migrate:up
 ```
 
 ## Working with Docker
@@ -243,7 +243,7 @@ npm run license:summary
 
 ### VS Code
 
-Go to the Debug menu (CTRL+SHIFT+D). From `RUN AND DEBUG` at the top select
+Go to the Debug menu (CTRL+SHIFT+D). From `RUN AND DATABASE_LOG` at the top select
 `Run Script: Launch via NPM`. You should now be able to start debugging
 by pressing `F5`.
 
