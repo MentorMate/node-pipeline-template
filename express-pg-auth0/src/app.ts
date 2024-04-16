@@ -29,10 +29,8 @@ import { UsersRepository } from '@api/users';
 import axios from 'axios';
 
 export function create(env: Environment) {
-  // init modules
   initDatabase();
 
-  // create a logger
   const logger = pino({
     name: 'http',
     ...(env.NODE_ENV === 'development' && {
@@ -42,16 +40,16 @@ export function create(env: Environment) {
     }),
   });
 
-  // create services
   const dbClient = createDbClient();
+
   const usersRepository = new UsersRepository(dbClient);
   const todosRepository = new TodosRepository(dbClient);
+
   const auth0Service = new Auth0Service(logger, axios, env);
   const authService = new AuthService(logger, auth0Service, usersRepository);
   const todosService = new TodosService(todosRepository);
   const services: Request['services'] = { todosService, authService };
 
-  // create the app
   const app = express();
 
   if (env.REQUEST_LOGGING) {
@@ -62,7 +60,7 @@ export function create(env: Environment) {
     // add security HTTP headers
     helmet(),
     // enables CORS
-    cors(/* TODO: configure origins */),
+    cors(),
     // parses the body of application/json requests
     json(),
     // compresses response bodies
@@ -74,8 +72,6 @@ export function create(env: Environment) {
   );
 
   // flatten all routes into an array
-  // alternatively, a separate router instance can be used
-  // for each group of routes (group by prefix)
   const routes = [...healthcheckRoutes, ...authRoutes, ...todoRoutes];
 
   // register routes
