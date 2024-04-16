@@ -130,19 +130,19 @@ export default (toolbox: GluegunToolbox) => {
         await Promise.all([
           copyAsync(
             `${projectDir}/scripts/generate-openapi.ts`,
-            `${appDir}/scripts/generate-openapi.ts`,
+            `${appDir}/scripts/generate-openapi.ts`
           ),
           copyAsync(
             `${projectDir}/.openapi/gitignorefile`,
-            `${appDir}/.openapi/.gitignore`,
+            `${appDir}/.openapi/.gitignore`
           ),
           copyAsync(
             `${projectDir}/docker-compose.yml`,
-            `${appDir}/docker-compose.yml`,
+            `${appDir}/docker-compose.yml`
           ),
           copyAsync(
             `${projectDir}/docker-compose.override.example.yml`,
-            `${appDir}/docker-compose.override.example.yml`,
+            `${appDir}/docker-compose.override.example.yml`
           ),
           copyAsync(`${projectDir}/migrations`, `${appDir}/migrations`),
           copyAsync(`${assetsPath}/db/pg/scripts`, `${appDir}/scripts`, {
@@ -153,7 +153,7 @@ export default (toolbox: GluegunToolbox) => {
 
       Object.assign(envVars, {
         Knex: {
-          DEBUG: 'knex:query',
+          DATABASE_LOG: 'knex:query',
         },
       });
 
@@ -178,7 +178,7 @@ export default (toolbox: GluegunToolbox) => {
     }
 
     success(
-      `${framework} installation completed successfully. Please wait for the other steps to be completed...`,
+      `${framework} installation completed successfully. Please wait for the other steps to be completed...`
     );
   };
 };
