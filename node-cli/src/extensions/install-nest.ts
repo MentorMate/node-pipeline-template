@@ -60,11 +60,11 @@ export default (toolbox: GluegunToolbox) => {
           const promises = [
             copyAsync(
               `${assetsPath}/${framework}/multiple-choice-features/authorization/${db}/${authOption}`,
-              `${appDir}/src/api/auth`,
+              `${appDir}/src/api/auth`
             ),
             copyAsync(
               `${assetsPath}/${framework}/multiple-choice-features/authorization/${db}/test/${authOption}/todos`,
-              `${appDir}/test/todos`,
+              `${appDir}/test/todos`
             ),
           ];
 
@@ -72,8 +72,8 @@ export default (toolbox: GluegunToolbox) => {
             promises.push(
               copyAsync(
                 `${assetsPath}/${framework}/multiple-choice-features/authorization/${db}/test/${authOption}/auth`,
-                `${appDir}/test/auth`,
-              ),
+                `${appDir}/test/auth`
+              )
             );
           }
 
@@ -81,8 +81,8 @@ export default (toolbox: GluegunToolbox) => {
             promises.push(
               copyAsync(
                 `${assetsPath}/${framework}/multiple-choice-features/authorization/${db}/test/${authOption}/jest-e2e.config.js`,
-                `${appDir}/test/jest-e2e.config.js`,
-              ),
+                `${appDir}/test/jest-e2e.config.js`
+              )
             );
           }
 
@@ -90,20 +90,20 @@ export default (toolbox: GluegunToolbox) => {
             promises.push(
               copyAsync(
                 `${assetsPath}/${framework}/multiple-choice-features/users/${db}/${authOption}`,
-                `${appDir}/src/api/users`,
-              ),
+                `${appDir}/src/api/users`
+              )
             );
           }
 
           promises.push(
             copyAsync(
               `${assetsPath}/${framework}/multiple-choice-features/environment/${db}-${authOption}/environment.ts`,
-              `${appDir}/src/utils/environment.ts`,
+              `${appDir}/src/utils/environment.ts`
             ),
             copyAsync(
               `${assetsPath}/${framework}/multiple-choice-features/environment/${db}-${authOption}/environment.spec.ts`,
-              `${appDir}/src/utils/environment.spec.ts`,
-            ),
+              `${appDir}/src/utils/environment.spec.ts`
+            )
           );
 
           await Promise.all(promises);
@@ -168,38 +168,38 @@ export default (toolbox: GluegunToolbox) => {
               ),
               copyAsync(
                 `${assetsPath}/nest/example-app-${db}/docker-compose.yml`,
-                `${appDir}/docker-compose.yml`,
+                `${appDir}/docker-compose.yml`
               ),
               copyAsync(
                 `${assetsPath}/nest/example-app-${db}/docker-compose.override.example.yml`,
-                `${appDir}/docker-compose.override.example.yml`,
+                `${appDir}/docker-compose.override.example.yml`
               ),
               copyAsync(
                 `${assetsPath}/nest/example-app-${db}/migrations`,
-                `${appDir}/migrations`,
+                `${appDir}/migrations`
               ),
               copyAsync(
                 `${assetsPath}/${framework}/example-app-${db}/tsconfig.build.json`,
                 `${appDir}/tsconfig.build.json`,
-                { overwrite: true },
+                { overwrite: true }
               ),
               copyAsync(
                 `${assetsPath}/nest/example-app-${db}/tsconfig.json`,
                 `${appDir}/tsconfig.json`,
-                { overwrite: true },
+                { overwrite: true }
               ),
               db === Database.POSTGRESQL &&
                 copyAsync(`${assetsPath}/db/pg/scripts`, `${appDir}/scripts`, {
                   overwrite: true,
                 }),
-            ].filter(Boolean),
+            ].filter(Boolean)
           );
         }
 
         if (db === Database.POSTGRESQL) {
           Object.assign(envVars, {
             Knex: {
-              DEBUG: 'knex:query',
+              DATABASE_LOG: 'knex:query',
             },
           });
 
@@ -228,7 +228,7 @@ export default (toolbox: GluegunToolbox) => {
     }
 
     success(
-      'Nest installation completed successfully. Please wait for the other steps to be completed...',
+      'Nest installation completed successfully. Please wait for the other steps to be completed...'
     );
   };
 };
