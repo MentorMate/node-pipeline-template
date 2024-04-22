@@ -8,8 +8,6 @@ declare module 'zod' {
 }
 
 export const register = () => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   if (typeof z.ZodNumber.prototype.coerce === 'undefined') {
     z.ZodNumber.prototype.coerce = function () {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
