@@ -203,7 +203,6 @@ export default {
     }
 
     stepsOfExecution.push(
-      toolbox.jsLinters(userInput),
       toolbox.jestConfig(userInput),
       toolbox.auditConfig(userInput),
       toolbox.debug(userInput),
@@ -225,6 +224,10 @@ export default {
       userInput.features.includes('prePush')
     ) {
       stepsOfExecution.push(toolbox.setupHusky(userInput));
+    }
+
+    if (userInput.features.includes('JSLinters')) { 
+      stepsOfExecution.push(toolbox.jsLinters(userInput));
     }
 
     if (userInput.features.includes('dockerizeWorkflow')) {
