@@ -33,7 +33,7 @@ export default (toolbox: GluegunToolbox) => {
 
       if (!devSetup) {
         await run(
-          `cd ${appDir} && cd ../ && npx @nestjs/cli@9.4.2 new ${projectName} --directory ${projectName} --strict --skip-git --skip-install --package-manager npm`,
+          `cd ${appDir} && cd ../ && npx nest new ${projectName} --directory ${projectName} --strict --skip-git --skip-install --package-manager npm`,
         );
 
         await Promise.all([

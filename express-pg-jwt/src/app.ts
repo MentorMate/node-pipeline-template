@@ -65,7 +65,7 @@ export function create(env: Environment) {
   // create the app
   const app = express();
 
-  if (env['REQUEST_LOGGING']) {
+  if (env.REQUEST_LOGGING) {
     app.use(logRequest(logger));
   }
 
@@ -73,7 +73,7 @@ export function create(env: Environment) {
     // add security HTTP headers
     helmet(),
     // enables CORS
-    cors(/* TODO: configure origins */),
+    cors(),
     // parses the body of application/json requests
     json(),
     // compresses response bodies
@@ -121,7 +121,7 @@ export function create(env: Environment) {
       [DuplicateRecordError.name]: Conflict,
       [UnauthorizedError.name]: Unauthorized,
     }),
-    handleError(logger, env['ERROR_LOGGING'])
+    handleError(logger, env.ERROR_LOGGING)
   );
 
   // define an app tear down function
