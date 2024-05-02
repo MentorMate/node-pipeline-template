@@ -1,6 +1,5 @@
 import { z, ZodType } from 'zod';
 
-// TODO: move to a config or smth
 export const paginationDefaults = {
   page: 1,
   items: 20,
