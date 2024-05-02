@@ -18,7 +18,6 @@ describe('UsersRepository', () => {
       jest.spyOn(usersQb, 'returning');
       jest.spyOn(usersQb, 'then');
       jest.spyOn(usersQb, 'catch').mockImplementationOnce(async () => ({
-        id: 1,
         ...user,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -26,7 +25,10 @@ describe('UsersRepository', () => {
 
       const result = await users.insertOne(user);
 
-      expect(usersQb.insert).toHaveBeenCalledWith(user);
+      expect(usersQb.insert).toHaveBeenCalledWith({
+        id: expect.any(String),
+        ...user,
+      });
       expect(usersQb.returning).toHaveBeenCalledWith('*');
       expect(usersQb.then).toHaveBeenCalled();
       expect(usersQb.catch).toHaveBeenCalled();
@@ -45,17 +47,19 @@ describe('UsersRepository', () => {
         .mockImplementationOnce(thenable as never);
 
       expect(
-        users.insertOne({ email: 'email@example.com', password: '123', userId: '1' })
-      ).rejects.toThrow(
-        new DuplicateRecordError('User email already taken')
-      );
+        users.insertOne({
+          email: 'email@example.com',
+          password: '123',
+          userId: '1',
+        })
+      ).rejects.toThrow(new DuplicateRecordError('User email already taken'));
     });
   });
 
   describe('findByEmail', () => {
     it('should return the first record found', async () => {
       const user: User = {
-        id: 1,
+        id: '1',
         email: 'email@example.com',
         userId: '1',
         password: '123',

@@ -24,6 +24,9 @@ services:
       - '${PORT}:${PORT}'
     env_file:
       - .env
+    environment:
+      # This overrides the .env file
+      - HOST=0.0.0.0
     # Mount host directory to docker container to support watch mode
     volumes:
       - .:/usr/src/app

@@ -1,5 +1,5 @@
 import { mockAxios } from '../utils/mock-axios';
-mockAxios()
+mockAxios();
 
 const authMock = jest.fn();
 
@@ -14,7 +14,6 @@ import {
   getTodoPayload,
   TodoNotFound,
   Unauthorized,
-  UnprocessableEntity,
 } from '../utils';
 import { Knex } from 'knex';
 import createError from 'http-errors';
@@ -23,7 +22,6 @@ describe('POST /v1/todos/:id', () => {
   let app: Express.Application;
   let destroy: () => Promise<void>;
   let dbClient: Knex;
-  const todoId = 1;
   const jwtTokens = {
     idToken: 'token',
   };
@@ -41,11 +39,7 @@ describe('POST /v1/todos/:id', () => {
     await dbClient.seed.run();
 
     authMock.mockImplementation(
-      (
-        req: { auth: { payload: { sub: string } } },
-        res,
-        next: () => true
-      ) => {
+      (req: { auth: { payload: { sub: string } } }, res, next: () => true) => {
         req.auth = {
           payload: {
             sub: 'tz4a98xxat96iws9zmbrgj3a',
@@ -63,10 +57,15 @@ describe('POST /v1/todos/:id', () => {
   describe('when user is authenticated', () => {
     describe('given the todo payload and id in the query', () => {
       it('should return the updated todo', async () => {
+        const todo = await dbClient('todos').first();
+        if (!todo) {
+          throw new Error('Todo not found');
+        }
+
         const todoPayload = getTodoPayload();
 
         const res = await request(app)
-          .patch(`/v1/todos/${todoId}`)
+          .patch(`/v1/todos/${todo.id}`)
           .set('Authorization', 'Bearer ' + jwtTokens.idToken)
           .send(todoPayload)
           .expect(200);
@@ -79,13 +78,13 @@ describe('POST /v1/todos/:id', () => {
 
     describe('given an empty payload and id in the query', () => {
       it('should return the not updated todo', async () => {
-        const todo = await dbClient('todos').where({ id: todoId }).first();
+        const todo = await dbClient('todos').first();
         if (!todo) {
           throw new Error('Todo not found');
         }
 
         const res = await request(app)
-          .patch(`/v1/todos/${todoId}`)
+          .patch(`/v1/todos/${todo.id}`)
           .send({})
           .set('Authorization', 'Bearer ' + jwtTokens.idToken);
 
@@ -108,26 +107,16 @@ describe('POST /v1/todos/:id', () => {
           .expect(expectError(TodoNotFound));
       });
     });
-
-    describe('given a text id in the query', () => {
-      it('should return 422 error', async () => {
-        await request(app)
-          .patch(`/v1/todos/test`)
-          .send(getTodoPayload())
-          .set('Authorization', 'Bearer ' + jwtTokens.idToken)
-          .expect(expectError(UnprocessableEntity));
-      });
-    });
   });
 
   describe('when user is not authenticated', () => {
     it('should return 401 error', async () => {
       authMock.mockImplementation((request, response, next) => {
-        next(createError(401, 'No authorization token was found'))
+        next(createError(401, 'No authorization token was found'));
       });
 
       await request(app)
-        .patch(`/v1/todos/${todoId}`)
+        .patch('/v1/todos/tz4a98xxat96iws9zmbrgj3a')
         .send(getTodoPayload())
         .expect(expectError(Unauthorized));
     });

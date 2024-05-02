@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const string = z.string().trim();
 const port = z.coerce.number().int().gte(1024).lte(65535);
+const host = z.string().trim();
 const expiration = z.coerce.number().int().gte(1000).or(z.string());
 const secret = z.string().trim().min(10);
 
@@ -11,12 +12,16 @@ export const environmentSchema = z.object({
 
   // HTTP
   PORT: port,
+  HOST: host,
 
-  REQUEST_LOGGING: z.enum(['true', 'false']).transform((value) => value === 'true'),
-  ERROR_LOGGING: z.enum(['true', 'false']).transform((value) => value === 'true'),
+  REQUEST_LOGGING: z
+    .enum(['true', 'false'])
+    .transform((value) => value === 'true'),
+  ERROR_LOGGING: z
+    .enum(['true', 'false'])
+    .transform((value) => value === 'true'),
 
   // PostgreSQL
-  // TODO: this limits your options, should be revisited
   PGHOST: string,
   PGPORT: port,
   PGUSER: string,

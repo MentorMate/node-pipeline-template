@@ -15,7 +15,7 @@ const userCreds: Credentials = {
 };
 
 const registeredUser: User = {
-  id: 1,
+  id: '1',
   createdAt: Date.now().toString(),
   updatedAt: Date.now().toString(),
   email: userCreds.email,
@@ -95,7 +95,7 @@ describe('AuthService', () => {
         .spyOn(auth0Service, 'deleteUser')
         .mockResolvedValueOnce(auth0User as any);
 
-      await expect(authService.register(userCreds)).rejects.toThrowError(
+      await expect(authService.register(userCreds)).rejects.toThrow(
         new BadRequestException('Something went wrong!'),
       );
     });

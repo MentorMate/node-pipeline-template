@@ -1,5 +1,5 @@
 import { mockAxios } from '../utils/mock-axios';
-mockAxios()
+mockAxios();
 
 const authMock = jest.fn();
 
@@ -39,11 +39,7 @@ describe('GET /v1/todos', () => {
     await dbClient.seed.run();
 
     authMock.mockImplementation(
-      (
-        req: { auth: { payload: { sub: string } } },
-        res,
-        next: () => true
-      ) => {
+      (req: { auth: { payload: { sub: string } } }, res, next: () => true) => {
         req.auth = {
           payload: {
             sub: 'tz4a98xxat96iws9zmbrgj3a',
@@ -222,7 +218,7 @@ describe('GET /v1/todos', () => {
   describe('when user is not authenticated', () => {
     it('should return 401 error', async () => {
       authMock.mockImplementation((request, response, next) => {
-        next(createError(401, 'No authorization token was found'))
+        next(createError(401, 'No authorization token was found'));
       });
 
       await request(app)
