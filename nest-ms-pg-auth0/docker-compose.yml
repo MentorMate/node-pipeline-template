@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+
+  rabbitmq:
+    extends:
+      file: ./docker-services/rabbitmq-service.yml
+      service: rabbitmq
+
+  db:
+    extends:
+      file: ./docker-services/postgres-service.yml
+      service: db
+    ports:
+      - '5433:${PGPORT}'
+    depends_on:
+      - rabbitmq
+  
+  auth:
+    extends:
+      file: ./docker-services/auth-service.yml
+      service: auth
+    ports:
+      - '3000:${PORT}'
+    depends_on:
+      - db
+      - rabbitmq
+  
+  auth-dev:
+    extends:
+      file: ./docker-services/auth-service.yml
+      service: auth-dev
+    ports:
+      - '3000:${PORT}'
+    depends_on:
+      - db
+      - rabbitmq
+
+  todos:
+    extends:
+      file: ./docker-services/todos-service.yml
+      service: todos
+    ports:
+      - '3001:${PORT}'
+    depends_on:
+      - db
+      - rabbitmq
+
+  todos-dev:
+    extends:
+      file: ./docker-services/todos-service.yml
+      service: todos-dev
+    ports:
+      - '3001:${PORT}'
+    depends_on:
+      - db
+      - rabbitmq
+
+volumes:
+  todos:
+  todos-node_modules:
+  auth:
+  auth-node_modules:
+  db-data:

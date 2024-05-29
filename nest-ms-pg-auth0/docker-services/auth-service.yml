@@ -1,0 +1,52 @@
+services:
+
+  auth:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      target: prod
+      args:
+        - SERVICE_NAME=auth
+    container_name: auth
+    image: auth
+    env_file:
+      - ../.env
+    environment:
+      # This overrides the .env file
+      - HOST=0.0.0.0
+    # Mount host directory to docker container to support watch mode
+    volumes:
+      - auth
+    profiles:
+      - prod
+
+
+    
+  auth-dev:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      target: dev
+      args:
+        - DOCKER_BUILDKIT=1
+        - SERVICE_NAME=auth
+    container_name: auth-dev
+    image: auth-dev
+    env_file:
+      - ../.env
+    environment:
+      # This overrides the .env file
+      - HOST=0.0.0.0
+    # Mount host directory to docker container to support watch mode
+    volumes:
+      - ../apps/auth:/usr/src/app/apps/auth
+      - ../libs:/usr/src/app/libs
+      # This ensures that the NestJS container manages the node_modules folder
+      # rather than synchronizes it with the host machine
+      - auth-node_modules:/usr/src/app/node_modules
+    profiles:
+      - dev
+    command: >
+      sh -c "cd /usr/src/app
+      && npm run db:migrate:latest
+      && npm run start:dev -- auth"
