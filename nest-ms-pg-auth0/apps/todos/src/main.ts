@@ -31,10 +31,14 @@ async function bootstrap() {
   app.enableCors();
 
   // add security HTTP headers
-  app.register(helmet);
+  app.register(
+    helmet as unknown as Parameters<NestFastifyApplication['register']>[0],
+  );
 
   // compresses response bodies
-  app.register(compression);
+  app.register(
+    compression as unknown as Parameters<NestFastifyApplication['register']>[0],
+  );
 
   // enable validation globally
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
@@ -63,9 +67,11 @@ async function bootstrap() {
     app.useGlobalFilters(new ErrorLoggingFilter(httpAdapterHost));
   }
 
+  const openPort = process.env.TODOS_API_PORT ?? port;
+
   // start server
-  await app.listen(port, configService.HOST, () => {
-    console.log(`App is running on http://${configService.HOST}:${port}`);
+  await app.listen(openPort, configService.HOST, () => {
+    console.log(`App is running on http://${configService.HOST}:${openPort}`);
   });
 }
 bootstrap();

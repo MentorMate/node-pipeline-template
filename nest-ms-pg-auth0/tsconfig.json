@@ -49,7 +49,7 @@
       ],
       "@healthchecks/*": [
         "libs/common/src/healthchecks/*"
-      ],
+      ]
     }
   },
   "ts-node": {

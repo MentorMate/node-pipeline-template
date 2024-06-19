@@ -6,6 +6,8 @@ services:
     extends:
       file: ./docker-services/rabbitmq-service.yml
       service: rabbitmq
+    networks:
+      - app-tier
 
   db:
     extends:
@@ -13,7 +15,31 @@ services:
       service: db
     ports:
       - '5433:${PGPORT}'
+    networks:
+      - app-tier
     depends_on:
+      - rabbitmq
+
+  gateway:
+    extends:
+      file: ./docker-services/gateway-service.yml
+      service: gateway
+    ports:
+      - '3000:${PORT}'
+    depends_on:
+      - db
+      - rabbitmq
+  
+  gateway-dev:
+    extends:
+      file: ./docker-services/gateway-service.yml
+      service: gateway-dev
+    ports:
+      - '3000:${PORT}'
+    networks:
+      - app-tier
+    depends_on:
+      - db
       - rabbitmq
   
   auth:
@@ -21,7 +47,9 @@ services:
       file: ./docker-services/auth-service.yml
       service: auth
     ports:
-      - '3000:${PORT}'
+      - '${AUTH_API_PORT}:${AUTH_API_PORT}'
+    expose:
+      - '${AUTH_API_PORT}'
     depends_on:
       - db
       - rabbitmq
@@ -31,7 +59,11 @@ services:
       file: ./docker-services/auth-service.yml
       service: auth-dev
     ports:
-      - '3000:${PORT}'
+      - '${AUTH_API_PORT}:${AUTH_API_PORT}'
+    expose:
+      - '${AUTH_API_PORT}'
+    networks:
+      - app-tier
     depends_on:
       - db
       - rabbitmq
@@ -41,7 +73,9 @@ services:
       file: ./docker-services/todos-service.yml
       service: todos
     ports:
-      - '3001:${PORT}'
+      - '${TODOS_API_PORT}:${TODOS_API_PORT}'
+    expose:
+      - '${TODOS_API_PORT}'
     depends_on:
       - db
       - rabbitmq
@@ -51,14 +85,26 @@ services:
       file: ./docker-services/todos-service.yml
       service: todos-dev
     ports:
-      - '3001:${PORT}'
+      - '${TODOS_API_PORT}:${TODOS_API_PORT}'
+    expose:
+      - '${TODOS_API_PORT}'
+    networks:
+      - app-tier
     depends_on:
       - db
       - rabbitmq
 
 volumes:
-  todos:
-  todos-node_modules:
+  gateway:
+  gateway-node_modules:  
   auth:
   auth-node_modules:
+  todos:
+  todos-node_modules:
   db-data:
+
+networks:
+  app-tier:
+    driver: bridge
+    ipam:
+      driver: default
